@@ -6,7 +6,8 @@ const connectDB = async (dburl)=>{
         await mongoose.connect(dburl)
         dblog("DataBase connected ...")
     }catch(e){
-        dblog("Fail to connect database",e)
+        dblog("Fail to connect database",e);
+        process.exit(1)
     }
 }
 
