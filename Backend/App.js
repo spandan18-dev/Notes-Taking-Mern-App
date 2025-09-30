@@ -6,7 +6,8 @@ import dotenv from 'dotenv'; dotenv.config()
 import connectDB from './DataBase/ConnectDB.js'
 
 // Routes 
-
+import router from './Routes/main.route.js';
+app.use("/",router)
 
 // fetch data from dotenv
 const port = process.env.PORT
