@@ -2,5 +2,9 @@ Notes Taking Application using MERN
  
  To Run Application :
 
- npm init -y
- npm install
+Backend /-
+    |- npm iniy -y
+    |-npm install
+
+Frontend /-
+    |
