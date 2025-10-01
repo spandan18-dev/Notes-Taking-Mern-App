@@ -4,10 +4,13 @@ import notes from '../model/notes.model.js'
 
 const get = async (req,res)=>{
     try{
-        const AllNotes = (await notes.find()).sort({cretedAt:-1});
+        const AllNotes = await notes.find().sort({ cretedAt : -1 });
         res.status(200).json(AllNotes)
     }catch(err){
-        res.status(500).json({message : "Error in fetching notes",error : err})
+        res.status(500).json({
+        message: "Error in fetching notes",
+        error: err.message || err
+    })
     }
 }
 

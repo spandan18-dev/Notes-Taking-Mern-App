@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/spandan18-dev/Notes-Taking-Mern-App#readme",
   "dependencies": {
+    "@upstash/ratelimit": "^2.0.6",
+    "@upstash/redis": "^1.35.4",
     "debug": "^4.4.3",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
