@@ -20,8 +20,8 @@ const port = process.env.PORT;
 const dburl = process.env.MONGODBURL;
 
 // Db Connection
-connectDB(dburl)
-
+connectDB(dburl).then(()=>{
 app.listen(port,()=>{
     applog(`server up ! http://localhost:${port}`)
 });
+})
