@@ -4,8 +4,19 @@ import notes from '../model/notes.model.js'
 
 const get = async (req,res)=>{
     try{
-        const AllNotes = await notes.find();
+        const AllNotes = (await notes.find()).sort({cretedAt:-1});
         res.status(200).json(AllNotes)
+    }catch(err){
+        res.status(500).json({message : "Error in fetching notes",error : err})
+    }
+}
+
+// Get a spicific Note  :
+const getbyid = async (req,res)=>{
+    try{
+        const notebyid = await notes.findById(req.params.id)
+        if(!notebyid) return res.status(404).json({message :"notes not found"})
+        res.status(200).json(notebyid)
     }catch(err){
         res.status(500).json({message : "Error in fetching notes",error : err})
     }
@@ -65,6 +76,7 @@ const del = async(req,res)=>{
 
 export {
     get,
+    getbyid,
     post,
     put,
     del
