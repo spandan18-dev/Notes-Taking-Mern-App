@@ -5,8 +5,11 @@ import debug from 'debug' ; const applog = debug("dev:applog");
 import dotenv from 'dotenv'; dotenv.config();
 import connectDB from './DataBase/ConnectDB.js';
 
+app.use(express.urlencoded({extended :true}))
+app.use(express.json())
+
 // Routes 
-import router from './Routes/main.route.js';
+import router from './Routes/notes.routes.js';
 app.use("/api/notes",router)
 
 // fetch data from dotenv

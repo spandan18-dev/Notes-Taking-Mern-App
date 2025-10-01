@@ -7,7 +7,7 @@ import {
     post,
     put,
     del
-} from '../Components/Notes.route.js'
+} from '../Components/Notes.components.js'
 
 router.get("/",get)
 router.post("/",post)
