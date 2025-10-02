@@ -5,11 +5,13 @@ import debug from 'debug' ; const applog = debug("dev:applog");
 import dotenv from 'dotenv'; dotenv.config();
 import connectDB from './DataBase/ConnectDB.js';
 import rateLimmiter from './middlewares/ratelim.js'
+import cors from 'cors'
 
 // Middlewares 
 app.use(express.urlencoded({extended :true}))
 app.use(express.json())
 app.use(rateLimmiter)
+app.use(cors())
 
 // Routes 
 import router from './Routes/notes.routes.js';
