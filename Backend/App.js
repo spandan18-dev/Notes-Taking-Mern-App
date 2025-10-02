@@ -8,10 +8,13 @@ import rateLimmiter from './middlewares/ratelim.js'
 import cors from 'cors'
 
 // Middlewares 
+app.use(cors({
+    origin : "http://localhost:5173"
+}))
 app.use(express.urlencoded({extended :true}))
 app.use(express.json())
 app.use(rateLimmiter)
-app.use(cors())
+
 
 // Routes 
 import router from './Routes/notes.routes.js';
