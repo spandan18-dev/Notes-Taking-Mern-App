@@ -4,9 +4,9 @@ import debug from 'debug' ; const dblog = debug("dev:db")
 const connectDB = async (dburl)=>{
     try{
         await mongoose.connect(dburl)
-        dblog("DataBase connected ...")
+        console.log("DataBase connected ...")
     }catch(e){
-        dblog("Fail to connect database",e);
+        console.error("Fail to connect database",e);
         process.exit(1)
     }
 }
