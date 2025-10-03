@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import api from "../lib/axios.jsx";
 import toast from "react-hot-toast";
-import { ArrowLeftIcon, LoaderIcon, Trash2Icon, SaveIcon } from "lucide-react";
-import axios from "axios";
+import { ArrowLeftIcon, LoaderIcon, Trash2Icon } from "lucide-react";
 
 const NoteDetailPage = () => {
-  const [note, setNote] = useState({ title: "", content: "" });
+  const [note, setNote] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -15,7 +15,7 @@ const NoteDetailPage = () => {
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/notes/${id}`);
+        const res = await api.get(`/notes/${id}`);
         setNote(res.data);
       } catch (error) {
         console.log("Error in fetching note", error);
@@ -24,15 +24,13 @@ const NoteDetailPage = () => {
         setLoading(false);
       }
     };
-
     fetchNote();
   }, [id]);
 
   const handleDelete = async () => {
     if (!window.confirm("Are you sure you want to delete this note?")) return;
-
     try {
-      await axios.delete(`http://localhost:3000/api/notes/${id}`);
+      await api.delete(`/notes/${id}`);
       toast.success("Note deleted");
       navigate("/");
     } catch (error) {
@@ -46,11 +44,9 @@ const NoteDetailPage = () => {
       toast.error("Please add a title or content");
       return;
     }
-
     setSaving(true);
-
     try {
-      await axios.put(`http://localhost:3000/api/notes/${id}`, note);
+      await api.put(`/notes/${id}`, note);
       toast.success("Note updated successfully");
       navigate("/");
     } catch (error) {
@@ -63,57 +59,61 @@ const NoteDetailPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-base-200 flex items-center justify-center">
-        <LoaderIcon className="animate-spin w-10 h-10 text-emerald-600" />
+      <div className="min-h-screen bg-gradient-to-br from-base-200 to-base-300 flex items-center justify-center">
+        <LoaderIcon className="animate-spin size-12 text-primary" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-base-200 py-8 px-4">
-      <div className="max-w-3xl mx-auto bg-base-100 shadow-xl rounded-xl p-6">
-        {/* Header */}
-        <div className="flex justify-between items-center border-b pb-4 mb-6">
-          <Link to="/" className="btn btn-ghost gap-2">
-            <ArrowLeftIcon className="w-5 h-5" /> Back
+    <div className="min-h-screen bg-gradient-to-br from-base-200 to-base-300 px-4 py-8">
+      <div className="max-w-2xl mx-auto">
+        <div className="flex items-center justify-between mb-6">
+          <Link to="/" className="inline-flex items-center gap-2 text-sm text-primary hover:underline">
+            <ArrowLeftIcon className="size-4" />
+            Back to Notes
           </Link>
-          <div className="flex gap-2">
-            <button
-              onClick={handleDelete}
-              className="btn btn-error btn-outline gap-2"
-            >
-              <Trash2Icon className="w-5 h-5" /> Delete
-            </button>
-            <button
-              onClick={handleSave}
-              disabled={saving}
-              className="btn btn-primary gap-2"
-            >
-              <SaveIcon className="w-5 h-5" />
-              {saving ? "Saving..." : "Save"}
-            </button>
-          </div>
+
+          <button onClick={handleDelete} className="btn btn-error btn-sm flex items-center gap-2">
+            <Trash2Icon className="size-4" />
+            Delete
+          </button>
         </div>
 
-        {/* Form */}
-        <div className="space-y-6">
-          <div className="form-control">
-            <label className="label font-semibold text-lg">Title</label>
-            <input
-              type="text"
-              className="input input-bordered w-full text-lg"
-              value={note.title}
-              onChange={(e) => setNote({ ...note, title: e.target.value })}
-            />
-          </div>
+        <div className="card bg-base-100 shadow-xl backdrop-blur-md">
+          <div className="card-body space-y-5">
+            <div>
+              <label className="label">
+                <span className="label-text font-medium">Title</span>
+              </label>
+              <input
+                type="text"
+                className="input input-bordered w-full"
+                value={note.title}
+                onChange={(e) => setNote({ ...note, title: e.target.value })}
+              />
+            </div>
 
-          <div className="form-control">
-            <label className="label font-semibold text-lg">Content</label>
-            <textarea
-              className="textarea textarea-bordered w-full min-h-[200px] text-base leading-relaxed"
-              value={note.content}
-              onChange={(e) => setNote({ ...note, content: e.target.value })}
-            />
+            <div>
+              <label className="label">
+                <span className="label-text font-medium">Content</span>
+              </label>
+              <textarea
+                className="textarea textarea-bordered w-full h-40"
+                value={note.content}
+                onChange={(e) => setNote({ ...note, content: e.target.value })}
+              />
+            </div>
+
+            <div className="flex justify-end">
+              <button
+                className="btn btn-primary px-6"
+                disabled={saving}
+                onClick={handleSave}
+              >
+                {saving ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
           </div>
         </div>
       </div>
